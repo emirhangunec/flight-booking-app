@@ -1,30 +1,19 @@
-# React + TypeScript + Vite
+# Türkçe
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bu proje, tanstack query, tanstack router, tailwindcss ve shadcn kütüphanelerini kullanarak bir responsive tasarım oluşturur.
 
-Currently, two official plugins are available:
+Bu tasarım, **639 pikselden küçük** ve **1300 pikselden büyük cihazlar** için optimize edilmiştir. Diğer cihazlar için ise **ilerleyen zamanlarda** tasarım yapılacaktır.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Bu projede gösterilen veriler test amaçlı olup, [AmericanAirlines/Flight-Engine](https://github.com/AmericanAirlines/Flight-Engine) reposunu kullanarak elde edilmiştir.
 
-## Expanding the ESLint configuration
+# English
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+This project is responsible for handling the responsive design of the application.
+It utilizes the Tanstack query and Tanstack router libraries for managing the responsive behavior.
+Additionally, it uses the Tailwind CSS framework for styling and the Shadcn library for shadow effects.
 
-- Configure the top-level `parserOptions` property like this:
+The responsive design is currently implemented for devices with a viewport width **smaller than 639 pixels** and **larger than 1300 pixels**.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+For other devices, the design will be **implemented in future updates**.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+The data shown in this project is for testing purposes and has been obtained using the [AmericanAirlines/Flight-Engine](https://github.com/AmericanAirlines/Flight-Engine) repository.
