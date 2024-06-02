@@ -1,12 +1,15 @@
 import AddPassengersForm from '@/components/add-passenger-form'
 import Banner from '@/components/banner/banner'
+import FlightBookedDialog from '@/components/flight-booked-dialog'
 import FlightItem from '@/components/flight-item'
 import FlightItemSkeleton from '@/components/flight-item-skeleton'
+import { Button } from '@/components/ui/button'
 import { getFlightByFlightNumber } from '@/lib/queries'
 import { formatDateFromString } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { getRouteApi } from '@tanstack/react-router'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 const routeApi = getRouteApi('/flight-details')
 
@@ -14,11 +17,33 @@ const FlightDetailsPage = () => {
 	const params: FlightDetailsPageParams = routeApi.useSearch()
 
 	const [passengers, setPassengers] = useState<Passenger[]>([])
+	const [ticketData, setTicketData] = useState<TicketData>()
+	const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false)
 
 	const { data, error, isPending } = useQuery({
 		queryKey: ['flight', params],
 		queryFn: () => getFlightByFlightNumber(params),
 	})
+
+	const toggleDetailDialog = (open: boolean) => setIsDetailDialogOpen(open)
+
+	const handleSubmit = () => {
+		if (!data || !data.outboundFlight || !passengers.length)
+			return toast.error('Bir hata oluştu')
+
+		const newTicketData: TicketData = {
+			flights: data,
+			passengers: passengers,
+		}
+		setTicketData(newTicketData)
+
+		toast.success('Uçuş onaylandı', {
+			position: 'top-right',
+			duration: 1000,
+		})
+
+		setIsDetailDialogOpen(true)
+	}
 
 	return (
 		<div className=''>
@@ -52,8 +77,9 @@ const FlightDetailsPage = () => {
 			)}
 			{!isPending && !error && data.outboundFlight && (
 				<>
-					<div className='flex flex-col items-center justify-center w-full lg:flex-row'>
-						<div className='flex items-center justify-center w-full px-6 py-4'>
+					{/* flight info */}
+					<div className='flex flex-col w-full justify-stretch lg:flex-row'>
+						<div className='flex items-center w-full px-6 py-4 justify-strecth'>
 							<div className='flex flex-col w-full max-w-screen-sm'>
 								<h2 className='p-2 text-2xl font-bold'>
 									{data.inboundFlight ? 'Gidiş Uçuşu' : 'Uçuş '} -{' '}
@@ -78,9 +104,43 @@ const FlightDetailsPage = () => {
 							</div>
 						)}
 					</div>
-					<AddPassengersForm
-						passengers={passengers}
-						setPassengers={setPassengers}
+					{/* passenger info and submit */}
+					<div className='flex flex-col items-start w-full gap-4 lg:flex-row justify-stretch'>
+						<AddPassengersForm
+							passengers={passengers}
+							setPassengers={setPassengers}
+						/>
+						<div className='flex items-center justify-center w-full'>
+							<div className='flex flex-col max-w-screen-sm gap-4 px-6 py-4'>
+								<h2 className='text-2xl font-bold'>Uçuş Kuralları</h2>
+								<p>
+									Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+									Reiciendis enim maxime ducimus quidem non, repellat corrupti
+									nulla blanditiis adipisci aliquam. Quam, dolores sed quod
+									molestiae id cupiditate consequatur dolor reprehenderit!
+								</p>
+								<p>
+									Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+									Reiciendis enim maxime ducimus quidem non, repellat corrupti
+									nulla blanditiis adipisci aliquam. Quam, dolores sed quod
+									molestiae id cupiditate consequatur dolor reprehenderit!
+								</p>
+
+								<Button
+									variant='primary'
+									size='lg'
+									disabled={!passengers.length}
+									onClick={handleSubmit}
+								>
+									Uçuşu Onayla
+								</Button>
+							</div>
+						</div>
+					</div>
+					<FlightBookedDialog
+						onOpenChange={toggleDetailDialog}
+						open={isDetailDialogOpen}
+						ticketData={ticketData}
 					/>
 				</>
 			)}

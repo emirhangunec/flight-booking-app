@@ -68,3 +68,11 @@ interface Passenger {
 	tckn: string
 	id: string
 }
+
+interface TicketData {
+	flights: {
+		outboundFlight: Flight
+		inboundFlight?: Flight
+	}
+	passengers: Passenger[]
+}
