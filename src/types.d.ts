@@ -76,3 +76,12 @@ interface TicketData {
 	}
 	passengers: Passenger[]
 }
+
+interface Hotel {
+	id: number
+	name: string
+	image: string
+	description: string
+	rating: number
+	price: number
+}

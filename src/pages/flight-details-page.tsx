@@ -37,10 +37,10 @@ const FlightDetailsPage = () => {
 		}
 		setTicketData(newTicketData)
 
-		toast.success('Uçuş onaylandı', {
-			position: 'top-right',
-			duration: 1000,
-		})
+		// toast.success('Uçuş onaylandı', {
+		// 	position: 'top-right',
+		// 	duration: 1000,
+		// })
 
 		setIsDetailDialogOpen(true)
 	}

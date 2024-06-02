@@ -29,7 +29,7 @@ const BannerSearchBar = () => {
 	const [origin, setOrigin] = useState('')
 	const [date, setDate] = useState<Date | undefined>(undefined)
 	const [returnDate, setReturnDate] = useState<Date | undefined>(undefined)
-	const [isRoundTrip, setIsRoundTrip] = useState(false)
+	const [isRoundTrip, setIsRoundTrip] = useState(true)
 
 	const handleSubmit = () => {
 		if (!date || !origin || !destination || (isRoundTrip && !returnDate)) {
@@ -66,12 +66,12 @@ const BannerSearchBar = () => {
 		{
 			label: 'Tek Yön',
 			onClick: () => setIsRoundTrip(false),
-			active: true,
+			active: false,
 		},
 		{
 			label: 'Gidiş Dönüş',
 			onClick: () => setIsRoundTrip(true),
-			active: false,
+			active: true,
 		},
 	]
 

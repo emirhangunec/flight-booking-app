@@ -33,6 +33,7 @@ const FlightPage = () => {
 	const [selectedOutboundFlight, setSelectedOutboundFlight] = useState<Flight>()
 	const [selectedInboundFlight, setSelectedInboundFlight] = useState<Flight>()
 
+	// if the user has selected both outbound and inbound? flights, navigate to the flight details page
 	useEffect(() => {
 		const isRoundTrip = params.isRoundTrip === 'true' && params.returnDate
 		if (isRoundTrip && selectedOutboundFlight && selectedInboundFlight) {
@@ -46,6 +47,7 @@ const FlightPage = () => {
 				to: `/flight-details`,
 				search: data,
 			})
+			return
 		}
 		if (!isRoundTrip && selectedOutboundFlight) {
 			const data = {
@@ -56,6 +58,7 @@ const FlightPage = () => {
 				to: `/flight-details`,
 				search: data,
 			})
+			return
 		}
 	}, [
 		selectedOutboundFlight,
@@ -72,20 +75,6 @@ const FlightPage = () => {
 	})
 
 	if (error) return <ErrorPage>{error.message}</ErrorPage>
-
-	const handleDateChange = (newDate: Date) => {
-		const { origin, destination, returnDate } = params
-		const data = {
-			origin,
-			destination,
-			date: !isRoundTrip || !selectedOutboundFlight ? newDate : params.date,
-			returnDate:
-				isRoundTrip && selectedOutboundFlight ? newDate : returnDate ?? '',
-			isRoundTrip: isRoundTrip ? 'true' : 'false',
-		}
-
-		navigate({ to: '/flights', search: data })
-	}
 
 	const isRoundTrip = params.isRoundTrip === 'true' && params.returnDate
 
@@ -107,6 +96,20 @@ const FlightPage = () => {
 			? setSelectedInboundFlight
 			: setSelectedOutboundFlight
 		: setSelectedOutboundFlight
+
+	const handleDateChange = (newDate: Date) => {
+		const { origin, destination, returnDate } = params
+		const data = {
+			origin,
+			destination,
+			date: !isRoundTrip || !selectedOutboundFlight ? newDate : params.date,
+			returnDate:
+				isRoundTrip && selectedOutboundFlight ? newDate : returnDate ?? '',
+			isRoundTrip: isRoundTrip ? 'true' : 'false',
+		}
+
+		navigate({ to: '/flights', search: data })
+	}
 
 	return (
 		<div className=''>
