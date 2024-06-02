@@ -29,7 +29,7 @@ const DatePicker = ({
 				<Button
 					variant={'outline'}
 					className={cn(
-						'w-[200px] pl-3 text-left font-normal',
+						'w-full pl-3 text-left font-normal',
 						!value && 'text-muted-foreground'
 					)}
 				>
@@ -38,7 +38,7 @@ const DatePicker = ({
 							locale: tr,
 						})
 					) : (
-						<span>{text}</span>
+						<span className='pr-2'> {text}</span>
 					)}
 					<CalendarIcon className='w-4 h-4 ml-auto opacity-50' />
 				</Button>

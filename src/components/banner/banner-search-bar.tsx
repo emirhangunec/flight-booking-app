@@ -5,6 +5,7 @@ import {
 	Plane,
 	PlaneLanding,
 	PlaneTakeoff,
+	XCircle,
 } from 'lucide-react'
 import SearchBarButton from './banner-search-bar-button'
 import { ComboboxWithSearch } from '../combobox-with-search'
@@ -19,6 +20,7 @@ import {
 	mapAirportsToComboboxItems,
 } from '@/lib/banner-search-bar-helpers'
 import { useNavigate } from '@tanstack/react-router'
+import { toast } from 'sonner'
 
 const BannerSearchBar = () => {
 	const navigate = useNavigate()
@@ -31,7 +33,14 @@ const BannerSearchBar = () => {
 
 	const handleSubmit = () => {
 		if (!date || !origin || !destination || (isRoundTrip && !returnDate)) {
-			return
+			return toast.error('Lütfen tüm alanları doldurunuz.', {
+				icon: <XCircle color='red' />,
+				action: {
+					label: 'X',
+					onClick: () => toast.dismiss(),
+				},
+				position: 'top-right',
+			})
 		}
 		const data = {
 			origin,
@@ -55,7 +64,7 @@ const BannerSearchBar = () => {
 
 	const tripOptionButtons = [
 		{
-			label: 'Gidiş',
+			label: 'Tek Yön',
 			onClick: () => setIsRoundTrip(false),
 			active: true,
 		},
@@ -93,7 +102,7 @@ const BannerSearchBar = () => {
 				</div>
 				<div className='flex w-full gap-4 p-4 bg-white lg:rounded-3xl lg:rounded-tl-none lg:p-7 max-sm:px-0 max-sm:pb-0 max-xl:flex-col'>
 					<div className='flex items-center gap-4 max-sm:flex-col justify-evenly'>
-						<div className='flex flex-col gap-2 lg:gap-4'>
+						<div className='flex flex-col w-full gap-2 lg:gap-4 max-lg:px-10'>
 							<div className='flex items-center gap-1 font-medium lg:gap-2'>
 								<PlaneTakeoff className='w-6 h-6' />
 								Kalkış Havalimanı
@@ -105,7 +114,7 @@ const BannerSearchBar = () => {
 								setValue={setOrigin}
 							/>
 						</div>
-						<div className='flex flex-col gap-2 lg:gap-4'>
+						<div className='flex flex-col w-full gap-2 lg:gap-4 max-lg:px-10'>
 							<div className='flex items-center gap-1 font-medium lg:gap-2'>
 								<PlaneLanding className='w-6 h-6' />
 								Varış Havalimanı
@@ -119,7 +128,7 @@ const BannerSearchBar = () => {
 						</div>
 					</div>
 					<div className='flex items-center gap-4 max-sm:flex-col justify-evenly'>
-						<div className='flex flex-col gap-2 lg:gap-4'>
+						<div className='flex flex-col w-full gap-2 lg:gap-4 max-lg:px-10'>
 							<div className='flex items-center gap-1 font-medium lg:gap-2'>
 								<CalendarDays className='w-6 h-6' />
 								{isRoundTrip ? 'Gidiş Tarihi' : 'Tarih'}
@@ -134,7 +143,7 @@ const BannerSearchBar = () => {
 							/>
 						</div>
 						{isRoundTrip && (
-							<div className='flex flex-col gap-2 lg:gap-4'>
+							<div className='flex flex-col w-full gap-2 lg:gap-4 max-lg:px-10'>
 								<div className='flex items-center gap-1 font-medium lg:gap-2'>
 									<CalendarDays className='w-6 h-6' />
 									Dönüş Tarihi

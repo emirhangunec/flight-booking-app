@@ -42,7 +42,7 @@ export function ComboboxWithSearch({
 					variant='outline'
 					role='combobox'
 					aria-expanded={open}
-					className='w-[200px] justify-between'
+					className='justify-between w-full'
 				>
 					{value
 						? items.find((item) => item.value === value.toUpperCase())?.label
@@ -52,7 +52,7 @@ export function ComboboxWithSearch({
 			</PopoverTrigger>
 			<PopoverContent
 				side='top'
-				className='w-[200px]  p-0'
+				className='w-full p-0'
 			>
 				<Command>
 					<CommandInput placeholder={`${text} Arayın...`} />

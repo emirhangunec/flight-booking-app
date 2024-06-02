@@ -54,3 +54,17 @@ interface PassengerCapacity {
 	main: number
 	first: number
 }
+
+interface FlightDetailsPageParams {
+	date: string
+	outboundFlightNumber: string
+	returnDate?: string
+	inboundFlightNumber?: string
+}
+
+interface Passenger {
+	firstName: string
+	lastName: string
+	tckn: string
+	id: string
+}

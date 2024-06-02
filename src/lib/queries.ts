@@ -1,4 +1,7 @@
-import { isParamsSatisfied } from './flights-helper'
+import {
+	isFlightDetailsPageSearchParamsSatisfied,
+	isFlightPageSearchParamsSatisfied,
+} from './flights-helper'
 
 const BASE_API_URL = 'https://mock-flight-data-60c1d26d3fd9.herokuapp.com'
 
@@ -19,7 +22,8 @@ export const getOneWayFlights = async (
 }
 
 export const getFlights = async (params: FlightPageSearchParams) => {
-	if (!isParamsSatisfied(params)) throw new Error('Invalid params')
+	if (!isFlightPageSearchParamsSatisfied(params))
+		throw new Error('Invalid params')
 
 	const outboundFlights = (await getOneWayFlights(params)) ?? []
 
@@ -34,5 +38,42 @@ export const getFlights = async (params: FlightPageSearchParams) => {
 	return {
 		outboundFlights,
 		inboundFlights,
+	}
+}
+export const getOneWayFlightByFlightNumber = async (
+	flightNumber: string,
+	date: string
+): Promise<Flight> => {
+	const response = await fetch(
+		`${BASE_API_URL}/flights?date=${date}&flightNumber=${flightNumber}`
+	)
+	if (!response.ok) throw new Error('Network response was not ok')
+	const flights: Flight[] = await response.json()
+	return flights[0]
+}
+
+export const getFlightByFlightNumber = async (
+	params: FlightDetailsPageParams
+): Promise<{
+	outboundFlight: Flight
+	inboundFlight?: Flight
+}> => {
+	if (!isFlightDetailsPageSearchParamsSatisfied(params))
+		throw new Error('Invalid params')
+	const isRoundTrip = !!params.returnDate && !!params.inboundFlightNumber
+	const outboundFlight = await getOneWayFlightByFlightNumber(
+		params.outboundFlightNumber,
+		params.date
+	)
+	const inboundFlight = isRoundTrip
+		? await getOneWayFlightByFlightNumber(
+				params.inboundFlightNumber!,
+				params.returnDate!
+			)
+		: undefined
+
+	return {
+		outboundFlight,
+		inboundFlight,
 	}
 }

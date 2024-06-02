@@ -6,12 +6,9 @@ import { formatDateFromString } from '@/lib/utils'
 interface FlightsHeaderProps {
 	departureAirportCode: string
 	arrivalAirportCode: string
-	departureTime?: string
-	arrivalTime?: string
+	flightData?: Flight
+	minDate?: Date
 	date?: string
-	flightDuration?: string
-	flightDistance?: number
-	flightNumber?: string
 	handleDateChange?: (date: Date) => void
 	isButtonsEnabled?: boolean
 }
@@ -19,12 +16,9 @@ interface FlightsHeaderProps {
 const FlightsHeader = ({
 	departureAirportCode,
 	arrivalAirportCode,
-	departureTime,
-	arrivalTime,
+	flightData,
+	minDate,
 	date,
-	flightDuration,
-	flightDistance,
-	flightNumber,
 	handleDateChange,
 	isButtonsEnabled = false,
 }: FlightsHeaderProps) => {
@@ -34,9 +28,11 @@ const FlightsHeader = ({
 				<div className='flex flex-col'>
 					<div className='text-sm text-gray-500'>Kalkış</div>
 					<div className='text-2xl font-bold'>{departureAirportCode}</div>
-					{departureTime && (
+					{flightData && (
 						<div className='text-sm text-gray-500'>
-							{formatDateFromString(departureTime, 'hh:mm')}
+							{formatDateFromString(flightData.departureTime, 'hh:mm')}
+							<br />
+							{formatDateFromString(flightData.departureTime, 'dd/MM/yyyy')}
 						</div>
 					)}
 				</div>
@@ -44,7 +40,7 @@ const FlightsHeader = ({
 					<div className='flex flex-col'>
 						<div className='flex items-center justify-between w-full'>
 							<div className='text-sm text-gray-500'>Tarih</div>
-							{isButtonsEnabled && handleDateChange && (
+							{isButtonsEnabled && handleDateChange && date && (
 								<div className='flex items-center justify-center gap-2'>
 									<Button
 										variant='outline'
@@ -53,6 +49,7 @@ const FlightsHeader = ({
 										onClick={() =>
 											handleDateChange(addDays(new Date(date), -1))
 										}
+										disabled={minDate && addDays(new Date(date), 1) <= minDate}
 									>
 										<ChevronLeft size={14} />
 									</Button>
@@ -73,25 +70,29 @@ const FlightsHeader = ({
 						</div>
 					</div>
 				)}
-				{flightDistance && flightDuration && flightNumber && (
+				{flightData && (
 					<div className='flex flex-col'>
 						<div className='flex items-center justify-between w-full'>
 							<div className='text-sm text-gray-500'>
-								Uçuş Bilgileri - {flightNumber}
+								Uçuş Bilgileri - {flightData.flightNumber}
 							</div>
 						</div>
-						<div className='text-2xl font-bold'>{flightDuration}</div>
+						<div className='text-2xl font-bold'>
+							{flightData.duration.hours} saat {flightData.duration.minutes} dk
+						</div>
 						<div className='text-sm font-bold text-gray-500'>
-							{flightDistance} km
+							{flightData.distance} km
 						</div>
 					</div>
 				)}
 				<div className='flex flex-col'>
 					<div className='text-sm text-gray-500'>Varış</div>
 					<div className='text-2xl font-bold'>{arrivalAirportCode}</div>
-					{arrivalTime && (
+					{flightData && (
 						<div className='text-sm text-gray-500'>
-							{formatDateFromString(arrivalTime, 'hh:mm')}
+							{formatDateFromString(flightData.arrivalTime, 'hh:mm')}
+							<br />
+							{formatDateFromString(flightData.arrivalTime, 'dd/MM/yyyy')}
 						</div>
 					)}
 				</div>
